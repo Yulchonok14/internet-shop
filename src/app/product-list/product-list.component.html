@@ -1,0 +1,11 @@
+<h1>Product list component</h1>
+
+<ul class="products">
+    <li *ngFor="let product of products">
+        <a routerLink="/product/{{product.id}}">
+            <span class="badge">{{product.id}}</span> {{product.name}}
+        </a>
+        <button class="delete" title="delete product"
+                (click)="delete(product)">x</button>
+    </li>
+</ul>

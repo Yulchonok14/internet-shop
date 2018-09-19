@@ -9,12 +9,12 @@
     "webpack-dev": "cross-env NODE_ENV=development webpack",
     "webpack-prod": "cross-env NODE_ENV=production webpack",
     "build:aot": "ngc -p tsconfig-aot.json",
-    "build-aot-prod": "npm run build:aot&&npm run webpack-prod"
+    "build-aot-prod": "yarn run build:aot && yarn run webpack-prod"
   },
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~4.2.0",
-    "@angular/compiler": "4.2.0",
+    "@angular/compiler": "~4.2.0",
     "@angular/compiler-cli": "^4.4.4",
     "@angular/core": "~4.2.0",
     "@angular/forms": "~4.2.0",
@@ -24,12 +24,12 @@
     "@angular/platform-server": "^4.4.4",
     "@angular/router": "~4.2.0",
     "core-js": "^2.4.1",
-    "rxjs": "5.0.1",
+    "rxjs": "^5.0.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@types/jasmine": "2.5.36",
-    "@types/node": "^6.0.117",
+    "@types/jasmine": "^2.8.8",
+    "@types/node": "^6.0.45",
     "angular2-template-loader": "^0.6.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -39,7 +39,7 @@
     "css-loader": "^0.26.1",
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.3",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "3.2.0",
     "jasmine-core": "^2.4.1",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",
@@ -48,14 +48,15 @@
     "karma-webpack": "^2.0.1",
     "mini-css-extract-plugin": "^0.4.2",
     "null-loader": "^0.1.1",
+    "reflect-metadata": "^0.1.3",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.2",
     "style-loader": "^0.13.1",
-    "ts-loader": "^5.1.0",
-    "typescript": "2.3.4",
-    "webpack": "^4.19.0",
-    "webpack-cli": "latest",
-    "webpack-dev-server": "latest",
-    "webpack-merge": "latest"
+    "ts-loader": "4.3.1",
+    "typescript": "^3.0.3",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^3.0.0"
   }
 }

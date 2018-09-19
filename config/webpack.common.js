@@ -3,11 +3,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var helpers = require('./helpers');
 
+var isProd = process.env.NODE_ENV === 'production';
+
 module.exports = {
     entry: {
         polyfill: './src/polyfill',
         vendor: './src/vendor',
-        app: './src/main'
+        app: isProd ? './src/main.aot.ts':'./src/main.ts'
     },
 
     optimization: {
@@ -27,14 +29,14 @@ module.exports = {
                     priority: -20,
                     reuseExistingChunk: true
                 },
+                polyfill: {
+                    name: 'polyfill'
+                },
                 vendor: {
                     name: 'vendor'
                 },
                 app: {
                     name: 'app'
-                },
-                polyfill: {
-                    name: 'polyfill'
                 }
             }
         }
@@ -63,7 +65,8 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: [/node-modules/],
                 query: {
-                    presets: ['es2015']
+                    presets: ['es2015'],
+                    compact: false
                 }
             },
             {
@@ -75,7 +78,7 @@ module.exports = {
                 loader: 'file-loader?name=assets/[name].[hash].[ext]'
             },
             {
-                test: /\.css$/,
+                test: /\.scss$/,
                 exclude: helpers.root('src', 'app'),
                 loader:
                     [
@@ -89,13 +92,9 @@ module.exports = {
                         },
                         "css-loader"
                     ]
-                    /*ExtractTextPlugin.extract({
-                    fallbackLoader: 'style-loader',
-                    loader: 'css-loader?sourceMap'
-                })*/
             },
             {
-                test: /\.css$/,
+                test: /\.scss$/,
                 include: helpers.root('src', 'app'),
                 loader: 'raw-loader'
             }
@@ -118,7 +117,8 @@ module.exports = {
         }),
 */
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'src/index.html',
+            chunksSortMode: 'dependency'
         })
     ]
 };

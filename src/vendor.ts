@@ -6,9 +6,3 @@ import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 import '@angular/router';
 import 'rxjs';
-
-if(process.env.ENV === 'production'){
-    //Production
-} else {
-    //Development and test
-}
