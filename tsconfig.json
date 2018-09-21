@@ -7,7 +7,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es5", "es6", "dom"],
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "types": [
       "node"
@@ -16,5 +16,6 @@
       "node_modules/@types"
     ]
   },
-  "exclude": ["node_modules", "src/main.aot.ts", "aot", "typings"]
+  "exclude": ["node_modules",
+    "src/main.aot.ts", "aot", "typings"]
 }
