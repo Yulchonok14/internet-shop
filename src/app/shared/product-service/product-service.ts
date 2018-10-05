@@ -35,23 +35,24 @@ export class ProductService {
 
     addProduct() {
         const newProd = {
-            'name': 'NewProduct',
+            'name': 'NewProduct1001',
             'id': '1001',
             'image': '',
             'description': 'Good new product',
-            'price': 100
+            'price': '100'
         };
-        return this.http.post('/product', newProd).subscribe(res => {console.log('result: ', res); });
+        return this.http.post('/product', newProd);
     }
 
-    updateProduct() {
+    updateProduct(productId) {
         const updatedProd = {
+            'id': '1001',
             'name': 'NewProductUpdated'
         };
-        return this.http.put('/product', updatedProd).subscribe(res => {console.log('result: ', res); });
+        return this.http.put('/product', updatedProd);
     }
     deleteProduct(productId) {
-        return this.http.delete('/product', {params: {'id': productId}}).subscribe(res => {console.log('result: ', res); });
+        return this.http.delete('/product', {params: {'id': productId}});
     }
 
 }

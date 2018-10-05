@@ -1,31 +1,3 @@
-/*
-var express = require('express');
-var bodyParser = require('body-parser');
-var path = require('path');
-var http = require('http');
-var app = express();
-
-var api = require('./server/api');
-
-app.use(express.static(path.join(__dirname,'dist')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-//app.set('view engine', 'html');
-//app.use('/', api);
-/!*app.get('*', function(req, res) {
-    res.render('index', { req: req });
-});*!/
-
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
-
-var port = process.env.PORT || '3000';
-app.set('port', port);
-
-var server = http.createServer(app);
-server.listen(port, function(){console.log('Server is running')});*/
-
 // These are important and needed before anything else
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
@@ -33,13 +5,8 @@ import 'reflect-metadata';
 import { enableProdMode } from '@angular/core';
 
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
 import { join } from 'path';
-
-// Faster server renders w/ Prod mode (dev mode never needed)
-enableProdMode();
-
-// Express server
-const app = express();
 
 const PORT = process.env.PORT || 3000;
 const DIST_FOLDER = join(process.cwd(), 'dist');
@@ -52,6 +19,12 @@ import { ngExpressEngine } from '@nguniversal/express-engine';
 // Import module map for lazy loading
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
+// Faster server renders w/ Prod mode (dev mode never needed)
+enableProdMode();
+
+// Express server
+const app = express();
+app.use(bodyParser.json());
 var api = require('./server/api');
 app.use('/', api);
 
@@ -64,11 +37,6 @@ app.engine('html', ngExpressEngine({
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
-
-// TODO: implement data requests securely
-//app.get('/api/*', (req, res) => {
-//    res.status(404).send('data requests are not supported');
-//});
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));

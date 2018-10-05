@@ -1,7 +1,11 @@
-<app-header></app-header>
-<nav>
-    <a routerLink="/home">Home</a>
-    <a routerLink="/products">Products</a>
-</nav>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<div class="main-container">
+    <app-header class="header"></app-header>
+    <nav class="nav">
+        <a routerLink="/home">Home</a>
+        <a routerLink="/products">Products</a>
+    </nav>
+    <div class="jumbotrone">
+        <router-outlet></router-outlet>
+    </div>
+    <app-footer class="footer"></app-footer>
+</div>

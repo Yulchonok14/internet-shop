@@ -41,7 +41,6 @@ router.get('/products', function(req, res) {
 router.post('/product', function(req, res) {
     connection(function(db) {
         console.log('Connected');
-        console.log('req.body: ', req.body);
         db.collection('products').insertOne(req.body)
             .then(function(product) {
                 console.log('product: ', product);
@@ -55,7 +54,7 @@ router.post('/product', function(req, res) {
 router.put('/product', function(req, res) {
     connection(function(db) {
         console.log('Connected');
-        db.collection('products').updateOne({'id': 1001}, {$set: req.body})
+        db.collection('products').updateOne({'id': req.body.id}, {$set: req.body})
             .then(function(product) {
                 console.log('product: ', product);
                 response.data = product;

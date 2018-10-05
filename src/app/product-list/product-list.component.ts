@@ -18,25 +18,35 @@ export class ProductListComponent implements OnInit {
     }];*/
 
     constructor(private _productService: ProductService) {
+        console.log('in constructor...');
         this._productService.getProducts().subscribe(responseProduct => {
-            console.log('responseProduct: ', responseProduct);
             this.products = responseProduct.data;
         });
     }
 
+    ngOnInit() {}
+
     delete(product) {
-        console.log('product: ', product);
-        this._productService.deleteProduct(product.id);
+        this._productService.deleteProduct(product.id).subscribe(() => {
+            this._productService.getProducts().subscribe(responseProduct => {
+                this.products = responseProduct.data;
+            });
+        })
     }
 
     update(product) {
-        console.log('product: ', product);
-        this._productService.updateProduct();
+        this._productService.updateProduct(product.id).subscribe(() => {
+            this._productService.getProducts().subscribe(responseProduct => {
+                this.products = responseProduct.data;
+            });
+        })
     }
 
     add() {
-        this._productService.addProduct();
+        this._productService.addProduct().subscribe(() => {
+            this._productService.getProducts().subscribe(responseProduct => {
+                this.products = responseProduct.data;
+            });
+        })
     }
-
-    ngOnInit() {}
 }

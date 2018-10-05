@@ -4,15 +4,15 @@ open cmd (admin):
 - C:\Program Files\MongoDB\Server\3.4\bin> mongod --dbpath=D:\mongoDB\data;
 - C:\Program Files\MongoDB\Server\3.4\bin> mongo;
 To start app:
-- directory-to-app> node server.js
+- directory-to-app> yarn run serve:ssr
 To build app:
-- directory-to-app> npm run build-sw
+- directory-to-app> yarn run build:ssr
 
 working with mongoDB:
 use internet_shop
 db.createCollection("products");
 
-db.products.insert([{'id': 1000, 'name': 'NewProduct1', 'image': '', 'description': 'Good product', 'price': 30}])
+db.products.insert([{'id': '1000', 'name': 'NewProduct1', 'image': '', 'description': 'Good product', 'price': '30'}])
 
 db.products.find() - get data from the collection.d
 
