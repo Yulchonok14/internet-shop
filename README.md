@@ -1,8 +1,8 @@
 To start mongoDB:
 - create directory: D:\mongoDB\data;
 open cmd (admin):
-- C:\Program Files\MongoDB\Server\3.4\bin> mongod --dbpath=D:\mongoDB\data;
-- C:\Program Files\MongoDB\Server\3.4\bin> mongo;
+- C:\Program Files\MongoDB\Server\3.6\bin> mongod --dbpath=D:\mongoDB\data;
+- C:\Program Files\MongoDB\Server\3.6\bin> mongo;
 To start app:
 - directory-to-app> yarn run serve:ssr
 To build app:

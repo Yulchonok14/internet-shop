@@ -4,6 +4,7 @@ import {NgModule}  from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {HomeComponent} from './home/home.component';
 import {HeaderComponent} from './header/header.component';
@@ -24,10 +25,12 @@ import { isPlatformBrowser } from '@angular/common';
         ProductDetailComponent,
         HeaderComponent,
         FooterComponent],
-    imports: [CommonModule,
+    imports: [
+        CommonModule,
         BrowserModule.withServerTransition({ appId: 'internet-shop' }),
         AppRoutingModule,
-        HttpClientModule],
+        HttpClientModule,
+        ReactiveFormsModule],
     exports: [],
     providers: [ProductService],
     bootstrap: [AppComponent]
