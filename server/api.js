@@ -1,9 +1,33 @@
-var experss = require('express');
-var router = experss.Router();
-var MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID;
+const experss = require('express');
+const router = experss.Router();
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
 
+const fileFilter = function(req, file, cb) {
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
 
 const connection = function(closure) {
     return MongoClient.connect('mongodb://localhost:27017/internet_shop', function(err, db) {
@@ -38,10 +62,19 @@ router.get('/products', function(req, res) {
     })
 });
 
-router.post('/product', function(req, res) {
+router.post('/product', upload.single('image'), function(req, res) {
     connection(function(db) {
         console.log('Connected');
-        db.collection('products').insertOne(req.body)
+        console.log('req.file: ', req.file);
+        console.log('req.body: ', req.body);
+        const newProd = {
+            'name': req.body.productName,
+            'id': req.body.productCode,
+            'image': req.file.path,
+            'description': req.body.productDescr,
+            'price': req.body.productPrice
+        };
+        db.collection('products').insertOne(newProd)
             .then(function(product) {
                 console.log('product: ', product);
                 response.data = product;

@@ -33,14 +33,15 @@ export class ProductService {
         return this.http.get<Response>(this.productsUrl);
     }
 
-    addProduct() {
+    addProduct(newProduct) {
         const newProd = {
-            'name': 'NewProduct1001',
-            'id': '1001',
-            'image': '',
-            'description': 'Good new product',
-            'price': '100'
+            'name': newProduct.productName,
+            'id': newProduct.productCode,
+            'image': newProduct.productImage,
+            'description': newProduct.productDescr,
+            'price': newProduct.productPrice
         };
+        console.log('newProd: ', newProd);
         return this.http.post('/product', newProd);
     }
 

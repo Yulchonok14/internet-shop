@@ -10,13 +10,7 @@ import {Product} from '../product';
     styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
-    products: Product[];/* = [{
-        id: 1000,
-        name: 'skirt',
-        image: '',
-        description: '',
-        price: 30
-    }];*/
+    products: Product[];
 
     productForm: FormGroup;
     submitted = false;
@@ -30,11 +24,11 @@ export class ProductListComponent implements OnInit {
 
     ngOnInit() {
         this.productForm = this.formBuilder.group({
+            productCode: ['', Validators.required],
             productName: ['', Validators.required],
             productImage: ['', Validators.required],
             productDescr: ['', Validators.required],
-            productPrice: ['', Validators.required],
-            password: ['', Validators.required]
+            productPrice: ['', Validators.required]
         });
     }
 
@@ -47,9 +41,15 @@ export class ProductListComponent implements OnInit {
         // stop here if form is invalid
         if (this.productForm.invalid) {
             return;
+        } else {
+            console.log('Product: ', this.productForm);
+            this._productService.addProduct(this.productForm.value).subscribe(() => {
+                this._productService.getProducts().subscribe(responseProduct => {
+                    this.products = responseProduct.data;
+                    //this.productForm.reset();
+                });
+            });
         }
-
-        alert('SUCCESS!! :-)')
     }
 
     delete(product) {
@@ -62,14 +62,6 @@ export class ProductListComponent implements OnInit {
 
     update(product) {
         this._productService.updateProduct(product.id).subscribe(() => {
-            this._productService.getProducts().subscribe(responseProduct => {
-                this.products = responseProduct.data;
-            });
-        })
-    }
-
-    add() {
-        this._productService.addProduct().subscribe(() => {
             this._productService.getProducts().subscribe(responseProduct => {
                 this.products = responseProduct.data;
             });
