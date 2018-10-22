@@ -62,7 +62,7 @@ router.get('/products', function(req, res) {
     })
 });
 
-router.post('/product', upload.single('image'), function(req, res) {
+router.post('/product', upload.single('productImage'), function(req, res) {
     connection(function(db) {
         console.log('Connected');
         console.log('req.file: ', req.file);

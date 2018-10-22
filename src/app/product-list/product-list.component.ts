@@ -67,4 +67,20 @@ export class ProductListComponent implements OnInit {
             });
         })
     }
+
+    slideDown() {
+        document.getElementById('slide-down').style.display = 'none';
+        const productListContainer = document.getElementsByClassName('product-list-container')[0] as HTMLElement;
+        productListContainer.style.top = '0';
+        const slideUpBtn = document.getElementById('slide-up');
+        slideUpBtn.style.display = 'block';
+    }
+
+    slideUp() {
+        document.getElementById('slide-up').style.display = 'none';
+        const productListContainer = document.getElementsByClassName('product-list-container')[0] as HTMLElement;
+        productListContainer.style.top = '-505px';
+        const slideDownBtn = document.getElementById('slide-down');
+        slideDownBtn.style.display = 'block';
+    }
 }
