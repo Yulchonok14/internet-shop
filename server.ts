@@ -24,6 +24,7 @@ enableProdMode();
 
 // Express server
 const app = express();
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.json());
 var api = require('./server/api');
 app.use('/', api);

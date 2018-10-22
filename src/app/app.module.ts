@@ -15,6 +15,7 @@ import {ProductService} from './shared/product-service/product-service'
 
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { isPlatformBrowser } from '@angular/common';
         BrowserModule.withServerTransition({ appId: 'internet-shop' }),
         AppRoutingModule,
         HttpClientModule,
-        ReactiveFormsModule],
+        ReactiveFormsModule,
+        AngularFontAwesomeModule],
     exports: [],
     providers: [ProductService],
     bootstrap: [AppComponent]

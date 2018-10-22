@@ -1,58 +1,71 @@
-<ul class="products">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <h2>Add new product</h2>
-                <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-                    <div class="form-group">
-                        <label>Product Code</label>
-                        <input type="text" formControlName="productCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productCode.errors }" />
-                        <div *ngIf="submitted && f.productCode.errors" class="invalid-feedback">
-                            <div *ngIf="f.productCode.errors.required">Product Code is required</div>
-                        </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Add new product</h2>
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label>Product Code</label>
+                    <input type="text" formControlName="productCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productCode.errors }" />
+                    <div *ngIf="submitted && f.productCode.errors" class="invalid-feedback">
+                        <div *ngIf="f.productCode.errors.required">Product Code is required</div>
                     </div>
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" formControlName="productName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" />
-                        <div *ngIf="submitted && f.productName.errors" class="invalid-feedback">
-                            <div *ngIf="f.productName.errors.required">Product Name is required</div>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" formControlName="productName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" />
+                    <div *ngIf="submitted && f.productName.errors" class="invalid-feedback">
+                        <div *ngIf="f.productName.errors.required">Product Name is required</div>
                     </div>
-                    <div class="form-group">
-                        <label>Product Image</label>
-                        <input type="file" formControlName="productImage" class="form-control-file" [ngClass]="{ 'is-invalid': submitted && f.productImage.errors }" />
-                        <div *ngIf="submitted && f.productImage.errors" class="invalid-feedback">
-                            <div *ngIf="f.productImage.errors.required">Product Image is required</div>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <input type="file" formControlName="productImage" class="form-control-file" [ngClass]="{ 'is-invalid': submitted && f.productImage.errors }" />
+                    <div *ngIf="submitted && f.productImage.errors" class="invalid-feedback">
+                        <div *ngIf="f.productImage.errors.required">Product Image is required</div>
                     </div>
-                    <div class="form-group">
-                        <label>Product Description</label>
-                        <input type="text" formControlName="productDescr" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productDescr.errors }" />
-                        <div *ngIf="submitted && f.productDescr.errors" class="invalid-feedback">
-                            <div *ngIf="f.productDescr.errors.required">Product Description is required</div>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label>Product Description</label>
+                    <input type="text" formControlName="productDescr" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productDescr.errors }" />
+                    <div *ngIf="submitted && f.productDescr.errors" class="invalid-feedback">
+                        <div *ngIf="f.productDescr.errors.required">Product Description is required</div>
                     </div>
-                    <div class="form-group">
-                        <label>Product Price</label>
-                        <input type="text" formControlName="productPrice" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productPrice.errors }" />
-                        <div *ngIf="submitted && f.productPrice.errors" class="invalid-feedback">
-                            <div *ngIf="f.productPrice.errors.required">Product Price is required</div>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label>Product Price</label>
+                    <input type="text" formControlName="productPrice" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.productPrice.errors }" />
+                    <div *ngIf="submitted && f.productPrice.errors" class="invalid-feedback">
+                        <div *ngIf="f.productPrice.errors.required">Product Price is required</div>
                     </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary">Add New Product</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Add New Product</button>
+                </div>
+            </form>
         </div>
     </div>
-    <li *ngFor="let product of products">
-        <a routerLink="/product/{{product.id}}">
-            <span class="badge">{{product.id}}</span> {{product.name}}
-        </a>
-        <button class="delete" title="delete product"
-                (click)="delete(product)">x</button>
-        <button title="update product"
-                (click)="update(product)">Update</button>
-    </li>
-</ul>
+</div>
+<div class="products">
+    <div class="product-card" *ngFor="let product of products">
+        <div class="title-block">
+            <div class="title">
+                <span>{{product.id}}</span>
+                <a routerLink="/product/{{product.id}}">
+                    {{product.name}}
+                </a>
+            </div>
+            <div class="action-buttons">
+                <button title="update product"
+                        (click)="update(product)"><i class="fa fa-pencil"></i>
+                </button>
+                <button class="delete" title="delete product"
+                        (click)="delete(product)"><i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="description-block">
+            <img class="product-image" src="{{product.image}}"/>
+            <p class="description">{{product.description}}</p>
+        </div>
+    </div>
+</div>
