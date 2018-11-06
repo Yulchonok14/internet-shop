@@ -1,0 +1,38 @@
+#file {
+
+  .file-select-block {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+    }
+
+    span {
+      display: none;
+    }
+
+    button {
+      color: #6495ed;
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+  }
+  
+  &.no-chosen-file {
+    .file-select-block {
+      input {
+        width: 100px;
+      }
+
+      span {
+        display: block;
+      }
+    }
+  }
+}
+
+form button.update {
+  background-color: #add8e6;
+}

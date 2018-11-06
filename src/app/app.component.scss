@@ -1,27 +1,25 @@
 .main-container {
   width: 80vw;
   background-color: #ebebeb;
-  height: 100vh;
   justify-content: space-between;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .jumbotrone {
-  height: 80%;
   position: relative;
-  overflow-y: scroll;
+  width: 100%;
+  min-height: 80vh;
 }
 
 .header {
-  height: 10%;
+  height: 10vh;
 }
 
 .nav {
-  height: 3%;
+  height: 3vh;
 }
 
 .footer {
-  height: 7%;
+  height: 7vh;
 }

@@ -8,10 +8,16 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 
-interface Response {
+interface ResponseArray {
     status: number;
     message: string;
     data: Product[];
+}
+
+interface ResponseSingle {
+    status: number;
+    message: string;
+    data: Product;
 }
 
 @Injectable()
@@ -29,20 +35,16 @@ export class ProductService {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
 
-    getProducts(): Observable<Response> {
-        return this.http.get<Response>(this.productsUrl);
+    getProducts(): Observable<ResponseArray> {
+        return this.http.get<ResponseArray>(this.productsUrl);
     }
 
-    addProduct(newProduct) {
-        const newProd = {
-            'name': newProduct.productName,
-            'id': newProduct.productCode,
-            'image': newProduct.productImage,
-            'description': newProduct.productDescr,
-            'price': newProduct.productPrice
-        };
-        console.log('newProd: ', newProd);
-        return this.http.post('/product', newProd);
+    getProductById(productId): Observable<ResponseSingle> {
+        return this.http.get<ResponseSingle>('/product', {params: {'productId': productId}});
+    }
+
+    addProduct(formData) {
+        return this.http.post('/product', formData);
     }
 
     updateProduct(productId) {

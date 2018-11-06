@@ -4,6 +4,14 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const multer = require('multer');
 
+var jsdom = require('jsdom');
+const JSDOM = jsdom.JSDOM;
+const window = new JSDOM().window;
+const document = (new JSDOM('')).window.document;
+global.document = document;
+
+var $ = jQuery = require('jquery')(window);
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './uploads/');
@@ -62,11 +70,20 @@ router.get('/products', function(req, res) {
     })
 });
 
+router.get('/product', function(req, res) {
+    connection(function(db) {
+        db.collection('products').findOne({id : req.query.productId})
+            .then(function(product) {
+                response.data = product;
+                res.json(response);
+            })
+            .catch(this.sendError);
+    })
+});
+
 router.post('/product', upload.single('productImage'), function(req, res) {
     connection(function(db) {
         console.log('Connected');
-        console.log('req.file: ', req.file);
-        console.log('req.body: ', req.body);
         const newProd = {
             'name': req.body.productName,
             'id': req.body.productCode,
@@ -76,7 +93,6 @@ router.post('/product', upload.single('productImage'), function(req, res) {
         };
         db.collection('products').insertOne(newProd)
             .then(function(product) {
-                console.log('product: ', product);
                 response.data = product;
                 res.json(response);
             })

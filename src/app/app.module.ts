@@ -4,7 +4,7 @@ import {NgModule}  from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 
 import {HomeComponent} from './home/home.component';
 import {HeaderComponent} from './header/header.component';
@@ -13,9 +13,10 @@ import {ProductListComponent} from './product-list/product-list.component';
 import {ProductDetailComponent} from './product-detail/product-detail.component';
 import {ProductService} from './shared/product-service/product-service'
 
-import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import {PLATFORM_ID, APP_ID, Inject} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
+import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import {EllipsisModule} from 'ngx-ellipsis';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
         AppRoutingModule,
         HttpClientModule,
         ReactiveFormsModule,
-        AngularFontAwesomeModule],
+        AngularFontAwesomeModule,
+        EllipsisModule],
     exports: [],
     providers: [ProductService],
     bootstrap: [AppComponent]
