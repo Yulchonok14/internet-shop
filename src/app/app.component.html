@@ -1,9 +1,16 @@
 <div class="main-container">
     <app-header class="header"></app-header>
     <nav class="nav">
-        <a routerLink="/home">Home</a>
-        <a routerLink="/products">Products</a>
+        <a routerLink="/home" [routerLinkActive]="'is-active'">Home</a>
+        <a routerLink="/products" [routerLinkActive]="'is-active'">Products</a>
     </nav>
+    <div dir="rtl">
+        <div class="slider">
+            <img src="uploads/Christmas.PNG"/>
+            <img src="uploads/Capturezsdas.PNG"/>
+            <img src="uploads/enjoy.PNG"/>
+        </div>
+    </div>
     <div class="jumbotrone">
         <router-outlet></router-outlet>
     </div>

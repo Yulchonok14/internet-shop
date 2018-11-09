@@ -47,12 +47,9 @@ export class ProductService {
         return this.http.post('/product', formData);
     }
 
-    updateProduct(productId) {
-        const updatedProd = {
-            'id': '1001',
-            'name': 'NewProductUpdated'
-        };
-        return this.http.put('/product', updatedProd);
+    updateProduct(updatedProduct) {
+        console.log('updatedProduct: ', updatedProduct);
+        return this.http.put('/product', updatedProduct);
     }
     deleteProduct(productId) {
         return this.http.delete('/product', {params: {'id': productId}});

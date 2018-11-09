@@ -100,10 +100,18 @@ router.post('/product', upload.single('productImage'), function(req, res) {
     })
 });
 
-router.put('/product', function(req, res) {
+router.put('/product', upload.single('productImage'), function(req, res) {
     connection(function(db) {
         console.log('Connected');
-        db.collection('products').updateOne({'id': req.body.id}, {$set: req.body})
+        console.log('req.body', req.body);
+        const uptProd = {
+            'name': req.body.productName,
+            'id': req.body.productCode,
+            'image': req.file.path,
+            'description': req.body.productDescr,
+            'price': req.body.productPrice
+        };
+        db.collection('products').updateOne({'id': uptProd.id}, {$set: uptProd})
             .then(function(product) {
                 console.log('product: ', product);
                 response.data = product;

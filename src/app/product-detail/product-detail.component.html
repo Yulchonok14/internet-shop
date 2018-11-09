@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row product-update-section" [ngStyle]="displayEditSection()">
     <div class="col-md-6 offset-md-3">
         <form [formGroup]="productDetailForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
@@ -46,5 +46,37 @@
                 <button class="btn update">Update Product</button>
             </div>
         </form>
+    </div>
+</div>
+<div class="product-detail-section">
+    <div class="product-card">
+        <div class="image-info-block">
+            <div class="image-block">
+                <img class="product-image" src="{{product.image}}"alt="not loading image..."/>
+            </div>
+            <div class="info-block">
+                <div class="action-block">
+                    <div class="code">
+                        <span>{{product.id}}</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button title="update product" (click)="edit()"><i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="delete" title="delete product"
+                                (click)="delete(product)"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="title-block">
+                    <a class="title">
+                        {{product.name}}
+                    </a>
+                </div>
+                <div class="price-block"><span>{{product.price}}<label>BYR</label></span></div>
+            </div>
+        </div>
+        <div class="description-block">
+            <p class="description">{{product.description}}</p>
+        </div>
     </div>
 </div>

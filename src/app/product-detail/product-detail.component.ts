@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Product} from '../product';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProductService} from '../shared/product-service/product-service'
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
 
 @Component({
@@ -16,8 +16,11 @@ export class ProductDetailComponent implements OnInit {
     productDetailForm: FormGroup;
     submitted = false;
     imageName = '';
+    private sub: any;
+    productId: string;
+    editFlag: boolean;
 
-    constructor(private _productService: ProductService, private formBuilder: FormBuilder, private router: Router) {}
+    constructor(private _productService: ProductService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit() {
         this.productDetailForm = this.formBuilder.group({
@@ -28,10 +31,10 @@ export class ProductDetailComponent implements OnInit {
             productPrice: ['', Validators.required]
         });
 
-        const url_string = this.router.url;
-        const productId = url_string.substr(url_string.lastIndexOf('/') + 1);
-        this._productService.getProductById(productId).subscribe((responseProduct) => {
-            console.log('getProductById: ', responseProduct);
+        this.productId = this.route.snapshot.paramMap.get("id");
+        this.editFlag = this.route.snapshot.queryParams.edit.toLowerCase() == 'true' ? true : false;;
+
+        this._productService.getProductById(this.productId).subscribe((responseProduct) => {
             this.imageName = $('#file input[type=file]').val();
             const imagePath = responseProduct.data.image;
             const namePos = imagePath.lastIndexOf('\\');
@@ -43,22 +46,54 @@ export class ProductDetailComponent implements OnInit {
         $('#file input[type=file]').on('change',function(){
             $('#file').removeClass('no-chosen-file');
             if(this.files[0] && this.files[0].name) {
-                console.log('this.files[0].name: ', this.files[0].name);
                 this.imageName = this.files[0].name;
+                $('.product-image').attr('src', 'uploads/' + this.imageName);
             } else {
                 this.imageName = '';
+                $('.product-image').attr('src', '');
             }
         });
     }
 
+    displayEditSection() {
+        if(this.editFlag){
+            return {display: 'block'};
+        } else {
+            return {display: 'none'};
+        }
+    }
+
     clearImage() {
-        console.log('clear image');
         $('#file').removeClass('no-chosen-file');
         const fileInput = $('#file input[type=file]');
         fileInput.replaceWith( fileInput.val('').clone( true ) );
+        this.product.image = '#';
     }
 
-    // convenience getter for easy access to form fields
+    getUrlParams (url) {
+        if (typeof url == 'undefined') {
+            url = window.location.search
+        }
+        var url = url.split('#')[0]; // Discard fragment identifier.
+        var urlParams = {};
+        var queryString = url.split('?')[1];
+        if (!queryString) {
+            if (url.search('=') !== false) {
+                queryString = url
+            }
+        }
+        if (queryString) {
+            const keyValuePairs = queryString.split('&');
+            for (let i = 0; i < keyValuePairs.length; i++) {
+                let keyValuePair = keyValuePairs[i].split('=');
+                let paramName = keyValuePair[0];
+                let paramValue = keyValuePair[1] || '';
+                urlParams[paramName] = decodeURIComponent(paramValue.replace(/\+/g, ' '))
+            }
+        }
+        return urlParams
+    }
+
     get f() { return this.productDetailForm.controls; }
 
     onSubmit() {
@@ -80,5 +115,16 @@ export class ProductDetailComponent implements OnInit {
                 this.router.navigateByUrl('/products');
             });
         }
+    }
+
+    delete(product) {
+        console.log('deleting product: ', product);
+        this._productService.deleteProduct(product.id).subscribe(() => {
+            this.router.navigateByUrl('/products');
+        })
+    }
+
+    edit() {
+        this.editFlag = !this.editFlag;
     }
 }

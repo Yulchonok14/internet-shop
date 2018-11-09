@@ -17,7 +17,25 @@
 }
 
 .nav {
-  height: 3vh;
+  height: 6vh;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  a {
+    border: 3px solid #ced4da;
+    padding: 0 25px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #6495ed;
+    color: white;
+    text-decoration: none;
+
+    &.is-active {
+      background-color: #0062cc;
+    }
+  }
 }
 
 .footer {

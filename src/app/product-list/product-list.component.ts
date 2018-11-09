@@ -95,10 +95,25 @@ export class ProductListComponent implements OnInit, OnDestroy {
             this._productService.addProduct(formData).subscribe(() => {
                 this._productService.getProducts().subscribe(responseProduct => {
                     this.products = responseProduct.data;
-                    //this.productForm.reset();
+                    this.clearForm(this.productForm);
                 });
             });
         }
+    }
+
+    clearForm(form) {
+        $(':input', form).each(function() {
+            var type = this.type;
+            var tag = this.tagName.toLowerCase();
+            console.log('input: ', this);
+            if (type == 'text' || type == 'password' || tag == 'textarea') {
+                console.log('input text');
+                this.value = "";
+            } if(type == 'file') {
+                $(this).replaceWith($(this).val('').clone( true ));
+                console.log('input file');
+            }
+        });
     }
 
     delete(product) {
