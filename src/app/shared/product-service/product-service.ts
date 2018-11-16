@@ -1,11 +1,10 @@
-import {Product} from '../../product';
+import { Product } from '../../product';
 
 import { Injectable, Inject, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable} from 'rxjs';
 
 
 interface ResponseArray {
@@ -28,7 +27,6 @@ export class ProductService {
     constructor(private http: HttpClient,
     @Optional() @Inject(APP_BASE_HREF) origin: string) {
         this.productsUrl = origin ? `${origin}${this.productsUrl}` : this.productsUrl;
-        console.log('ProductUrl: ', this.productsUrl);
     }
 
     generateId() {

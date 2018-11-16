@@ -59,7 +59,7 @@
                     <div class="code">
                         <span>{{product.id}}</span>
                     </div>
-                    <div class="action-buttons">
+                    <div class="action-buttons" *ngIf="env.isAdmin">
                         <button title="update product" (click)="edit()"><i class="fa fa-pencil"></i>
                         </button>
                         <button class="delete" title="delete product"

@@ -1,22 +1,26 @@
-import {AppComponent} from './app.component';
-import {CommonModule} from '@angular/common';
-import {NgModule}  from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
-import {AppRoutingModule} from './app-routing.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import { AppComponent } from './app.component';
+import { CommonModule } from '@angular/common';
+import { NgModule }  from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import {HomeComponent} from './home/home.component';
-import {HeaderComponent} from './header/header.component';
-import {FooterComponent} from './footer/footer.component';
-import {ProductListComponent} from './product-list/product-list.component';
-import {ProductDetailComponent} from './product-detail/product-detail.component';
-import {ProductService} from './shared/product-service/product-service'
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductService } from './shared/product-service/product-service'
+import { PagerService } from "./shared/page-service/page-service";
+import { SearchService } from "./shared/search-service/search-service1";
+import { LoginService } from "./shared/login-service/login-service";
 
-import {PLATFORM_ID, APP_ID, Inject} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
-import {AngularFontAwesomeModule} from 'angular-font-awesome';
-import {EllipsisModule} from 'ngx-ellipsis';
+import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { EllipsisModule } from 'ngx-ellipsis';
+import { SlideshowModule } from 'ng-simple-slideshow';
 
 
 @NgModule({
@@ -34,9 +38,10 @@ import {EllipsisModule} from 'ngx-ellipsis';
         HttpClientModule,
         ReactiveFormsModule,
         AngularFontAwesomeModule,
-        EllipsisModule],
+        EllipsisModule,
+        SlideshowModule],
     exports: [],
-    providers: [ProductService],
+    providers: [ ProductService, PagerService, SearchService, LoginService ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

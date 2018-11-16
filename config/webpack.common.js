@@ -75,10 +75,14 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+                /*loaders: [
+                    'file?hash=sha512&digest=hex&name=[hash].[ext]',
+                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                ]*/
                 loader: 'file-loader?name=assets/[name].[hash].[ext]'
             },
             {
-                test: /\.scss$/,
+                test: /\.(css|scss)$/,
                 exclude: helpers.root('src', 'app'),
                 loader:
                     [
@@ -90,11 +94,11 @@ module.exports = {
                                 publicPath: '../'
                             }
                         },
-                        "css-loader"
+                        ["css-loader", "file-loader"]
                     ]
             },
             {
-                test: /\.scss$/,
+                test: /\.(css|scss)$/,
                 include: helpers.root('src', 'app'),
                 loader: 'raw-loader'
             }

@@ -1,14 +1,20 @@
-<div class="slide-button-container">
-    <h5 class="add-product-title">Add new product</h5>
-    <button id="slide-down"
-            (click)="slideDown()"><i class="fa fa-angle-down"></i>
-    </button>
-    <button id="slide-up"
-            (click)="slideUp()"><i class="fa fa-angle-up"></i>
-    </button>
+<div class="top-panel">
+    <div class="slide-button-container">
+        <h5 class="add-product-title">Add new product</h5>
+        <button id="slide-down"
+                (click)="slideDown()"><i class="fa fa-angle-down"></i>
+        </button>
+        <button id="slide-up"
+                (click)="slideUp()"><i class="fa fa-angle-up"></i>
+        </button>
+    </div>
+    <div class="search-section">
+        <label>Search: </label>
+        <input [formControl]="queryField" type="text" />
+    </div>
 </div>
 <div class="product-list-container">
-    <div class="new-product-container">
+    <div *ngIf="env.isAdmin" class="new-product-container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
@@ -55,7 +61,7 @@
         </div>
     </div>
     <div class="products">
-        <div class="product-card" *ngFor="let product of products">
+        <div class="product-card" *ngFor="let product of pagedProducts">
             <div class="image-info-block">
                 <div class="image-block">
                     <img class="product-image" src="{{product.image}}"/>
@@ -65,7 +71,7 @@
                         <div class="code">
                             <span>{{product.id}}</span>
                         </div>
-                        <div class="action-buttons">
+                        <div class="action-buttons" *ngIf="env.isAdmin">
                             <button title="update product" [routerLink]="['/product', product.id]" [queryParams]="{edit: true}"><i class="fa fa-pencil"></i>
                             </button>
                             <button class="delete" title="delete product"
@@ -85,5 +91,24 @@
                 <p class="description" ellipsis>{{product.description}}</p>
             </div>
         </div>
+    </div>
+    <div class="pagination">
+        <ul *ngIf="pager.pages && pager.pages.length">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                <a (click)="setPage(1)">First</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+                <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                <a (click)="setPage(page)">{{page}}</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                <a (click)="setPage(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                <a (click)="setPage(pager.totalPages)">Last</a>
+            </li>
+        </ul>
     </div>
 </div>

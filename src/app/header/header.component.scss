@@ -1,0 +1,56 @@
+.header-content {
+  display: flex;
+  justify-content: space-between;
+
+  .logo {
+    display: flex;
+    color: #6495ED;
+    position: relative;
+
+    img {
+      height: 14vh;
+    }
+
+    .title {
+      margin: 20px;
+      font-size: 24pt;
+      position: absolute;
+      left: 14vh;
+    }
+  }
+
+  .sign-in {
+    color: #6495ED;
+    padding: 20px;
+
+    button {
+      color: #6495ed;
+      border: none;
+      background-color: transparent;
+    }
+
+    a {
+      text-decoration: underline;
+      color: #6495ED;
+      cursor: pointer;
+    }
+
+    form {
+      .form-group {
+        &.sign-in-btn {
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        label {
+          margin: 0 5px;
+          width: 140px;
+        }
+      }
+
+      button {
+        background-color: #add8e6;
+      }
+    }
+  }
+}

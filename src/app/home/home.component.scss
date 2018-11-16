@@ -1,6 +1,16 @@
+:host(.app-home) {
+  display: flex;
+  flex-direction: column;
+}
+
 .main-picture {
   object-fit: cover;
   height: 100%;
   width: 100%;
-  position: absolute;
+}
+
+.slideshow-section {
+  min-width: 300px;
+  width: 35vw;
+  margin: 0 auto 20px;
 }

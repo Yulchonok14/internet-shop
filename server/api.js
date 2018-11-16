@@ -134,5 +134,16 @@ router.delete('/product', function(req, res) {
     })
 });
 
+router.get('/login', function(req, res) {
+    connection(function(db) {
+        db.collection('login').find().toArray()
+            .then(function(login) {
+                response.data = login;
+                res.json(response);
+            })
+            .catch(this.sendError);
+    })
+});
+
 
 module.exports = router;

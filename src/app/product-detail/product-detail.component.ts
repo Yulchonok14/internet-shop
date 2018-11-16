@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Product} from '../product';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ProductService} from '../shared/product-service/product-service'
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Product } from '../product';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductService } from '../shared/product-service/product-service'
+import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
+import { environment } from '../../environments/environment.prod';
 
 @Component({
     selector: 'product-detail',
@@ -19,6 +20,7 @@ export class ProductDetailComponent implements OnInit {
     private sub: any;
     productId: string;
     editFlag: boolean;
+    env = environment;
 
     constructor(private _productService: ProductService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {}
 
@@ -32,7 +34,7 @@ export class ProductDetailComponent implements OnInit {
         });
 
         this.productId = this.route.snapshot.paramMap.get("id");
-        this.editFlag = this.route.snapshot.queryParams.edit.toLowerCase() == 'true' ? true : false;;
+        this.editFlag = this.route.snapshot.queryParams.edit.toLowerCase() == 'true' ? true : false;
 
         this._productService.getProductById(this.productId).subscribe((responseProduct) => {
             this.imageName = $('#file input[type=file]').val();

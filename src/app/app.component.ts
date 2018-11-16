@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import * as $ from 'jquery';
-import 'slick-carousel';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 @Component({
     selector: 'app-root',
@@ -14,9 +11,9 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         $(document).ready(function(){
-            $('.slider').slick({
+            /*$('.slider').slick({
                 autoplay: true
-            });
+            });*/
         });
     }
 }

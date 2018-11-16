@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-
-import {ProductService} from '../shared/product-service/product-service'
-import {Product} from '../product';
-import {OnDestroy} from "../../../node_modules/@angular/core/src/metadata/lifecycle_hooks";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ProductService } from '../shared/product-service/product-service'
+import { PagerService } from '../shared/page-service/page-service';
+import { SearchService } from '../shared/search-service/search-service1';
+import { Product } from '../product';
+import { OnDestroy } from "../../../node_modules/@angular/core/src/metadata/lifecycle_hooks";
 import * as $ from 'jquery';
+import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { environment } from '../../environments/environment.prod';
 
 @Component({
     selector: 'product-list',
@@ -13,16 +16,26 @@ import * as $ from 'jquery';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
     products: Product[];
+    productsCopy: Product[];
 
     productForm: FormGroup;
+    queryField: FormControl = new FormControl();
     submitted = false;
+
+    pager: any = {};
+    pagedProducts: any[];
+    productPerPage: number = 9;
+    env = environment;
 
     private productsChanges: MutationObserver;
 
-    constructor(private _productService: ProductService, private formBuilder: FormBuilder) {
+    constructor(private _productService: ProductService, private formBuilder: FormBuilder, private pagerService: PagerService,
+                private searchService: SearchService) {
 
         this._productService.getProducts().subscribe(responseProduct => {
             this.products = responseProduct.data;
+            this.productsCopy = this.products.slice(0);
+            this.setPage(1);
         });
 
         $(document).ready(function() {
@@ -61,6 +74,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
         })
     }
 
+    setPage(page: number) {
+        this.pager = this.pagerService.getPager(this.products.length, page, this.productPerPage);
+        this.pagedProducts = this.products.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
+
 
     ngOnInit() {
         this.productForm = this.formBuilder.group({
@@ -70,6 +88,20 @@ export class ProductListComponent implements OnInit, OnDestroy {
             productDescr: ['', Validators.required],
             productPrice: ['', Validators.required]
         });
+        this.queryField.valueChanges
+            .pipe(debounceTime(200))
+            .pipe(distinctUntilChanged())
+            //.switchMap(query => {
+            .subscribe( query => {
+                if(query.trim().length) {
+                    this.products = this.productsCopy;
+                    this.products = this.searchService.findProducts(query, this.products);
+                } else {
+                    this.products = this.productsCopy;
+                }
+                this.setPage(1);
+            });
+
     }
 
     ngOnDestroy(): void {
