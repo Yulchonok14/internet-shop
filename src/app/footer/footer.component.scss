@@ -1,0 +1,33 @@
+.panel-footer {
+  padding-top: 35px;
+  padding-bottom: 30px;
+  background-color: #ebebeb;
+  border-top: 0;
+
+  div.row {
+    margin-bottom: 35px;
+  }
+}
+#hours, #address {
+  line-height: 2;
+
+  hr {
+    display: none;
+  }
+}
+#hours > span, #address > span {
+  font-size: 1.3em;
+}
+#address p {
+  color: #6495ed;
+  font-size: .8em;
+  line-height: 1.8;
+}
+
+@media (max-width: 575px) {
+  #hours, #address {
+    hr {
+      display: block;
+    }
+  }
+}

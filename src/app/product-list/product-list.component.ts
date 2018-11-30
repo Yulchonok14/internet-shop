@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ProductService } from '../shared/product-service/product-service'
 import { PagerService } from '../shared/page-service/page-service';
@@ -8,6 +8,9 @@ import { OnDestroy } from "../../../node_modules/@angular/core/src/metadata/life
 import * as $ from 'jquery';
 import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment.prod';
+import { isPlatformBrowser } from '@angular/common';
+
+import { Observable} from 'rxjs';
 
 @Component({
     selector: 'product-list',
@@ -30,7 +33,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private productsChanges: MutationObserver;
 
     constructor(private _productService: ProductService, private formBuilder: FormBuilder, private pagerService: PagerService,
-                private searchService: SearchService) {
+                private searchService: SearchService, @Inject(PLATFORM_ID) private platformId: Object) {
 
         this._productService.getProducts().subscribe(responseProduct => {
             this.products = responseProduct.data;
@@ -38,40 +41,135 @@ export class ProductListComponent implements OnInit, OnDestroy {
             this.setPage(1);
         });
 
-        $(document).ready(function() {
-            const productCards = document.querySelectorAll('.product-card');
-            let productCardWidth = 0;
-            if (productCards.length !== 0) {
-                console.log('productCards: ', productCards);
-                let productCard = productCards[0] as HTMLElement;
-                productCardWidth = parseInt(getComputedStyle(productCard).width);
-                for (let i = 0; i < productCards.length; i++) {
-                    productCard = productCards[i] as HTMLElement;
-                    console.log('productCardWidth: ', productCardWidth);
-                    console.log('productCard[i]: ', productCard);
-                    productCard.style.height = productCardWidth + 'px';
+        if (isPlatformBrowser(this.platformId)) {
+            $(document).ready(function () {
+                const productCards = document.querySelectorAll('.product-card');
+                let productCardWidth = 0;
+                if (productCards.length !== 0) {
+                    let productCard = productCards[0] as HTMLElement;
+                    productCardWidth = parseInt(getComputedStyle(productCard).width);
+                    for (let i = 0; i < productCards.length; i++) {
+                        productCard = productCards[i] as HTMLElement;
+                        productCard.style.height = productCardWidth + 'px';
+                    }
                 }
+
+
+                const products = document.querySelector('.products');
+
+                this.productsChanges = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.addedNodes.length !== 0) {
+                            let newProductCard = mutation.addedNodes[0] as HTMLElement;
+                            newProductCard.style.height = parseInt(getComputedStyle(newProductCard).width) + 'px';
+                        }
+                    });
+                });
+
+                this.productsChanges.observe(products, {
+                    attributes: true,
+                    childList: true,
+                    characterData: true
+                });
+            })
+        }
+
+        this.testObservable();
+    }
+
+
+    testObservable() {
+
+        /*function sequenceSubscriber(observer){
+            const seq = [1,2,3];
+            let timerId;
+
+            function doSequence(seq, ind){
+                timerId = setTimeout(() => {
+                    observer.next(seq[ind]);
+                    if(ind >= seq.length - 1) {
+                        observer.complete();
+                    } else {
+                        doSequence(seq, ++ind);
+                    }
+                }, 1000);
             }
 
+            doSequence(seq, 0);
 
-            const products = document.querySelector('.products');
+            return {unsubscribe(){
+                clearTimeout(timerId);
+            }}
+        }*/
 
-            this.productsChanges = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    console.log('mutation.addedNodes: ', mutation.addedNodes);
-                    if(mutation.addedNodes.length !== 0) {
-                        let newProductCard = mutation.addedNodes[0] as HTMLElement;
-                        newProductCard.style.height = parseInt(getComputedStyle(newProductCard).width) + 'px';
+        function sequenceSubscriberMultiple() {
+            const seq = [1,2,3];
+
+            let timerId;
+
+            const observers = [];
+
+            return (observer) => {
+                observers.push(observer);
+
+                if(observers.length === 1) {
+                    console.log('pass length', observers);
+                    timerId = doSequence({
+                        next(val) {
+                            observers.forEach(obs => obs.next(val)
+                            )
+                        },
+                        complete(){
+                            observers.slice(0).forEach(obs => obs.complete());
+                        }
+                    }, seq, 0);
+                }
+
+                return {
+                    unsubscribe() {
+                        observers.splice(observers.indexOf(observer), 1);
+
+                        if(observers.length === 0) {
+                            clearTimeout(timerId);
+                        }
                     }
-                });
-            });
+                }
+            }
+        }
 
-            this.productsChanges.observe(products, {
-                attributes:true,
-                childList: true,
-                characterData: true
+        function doSequence(observer, seq, ind) {
+            return setTimeout(() => {
+                observer.next(seq[ind]);
+                if(ind === seq.length - 1) {
+                    observer.complete();
+                } else {
+                    doSequence(observer, seq, ++ind);
+                }
+            }, 1000);
+        }
+
+        let observe = new Observable(sequenceSubscriberMultiple());
+
+        observe.subscribe({
+            next(num) {
+                console.log('current number. first: ', num);
+            },
+            complete() {
+                console.log('sequence is over. first');
+            }
+        });
+
+        setTimeout(() => {
+
+            observe.subscribe({
+                next(num) {
+                    console.log('current number. second: ', num);
+                },
+                complete() {
+                    console.log('sequence is over. second');
+                }
             });
-        })
+        }, 1500);
     }
 
     setPage(page: number) {
@@ -101,7 +199,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
                 }
                 this.setPage(1);
             });
-
     }
 
     ngOnDestroy(): void {
@@ -117,24 +214,26 @@ export class ProductListComponent implements OnInit, OnDestroy {
         if (this.productForm.invalid) {
             return;
         } else {
-            var file = $('#productAvatar').prop('files')[0];
-            var formData = new FormData();
-            formData.append("productImage", file);
-            formData.append("productCode", this.productForm.value.productCode);
-            formData.append("productName", this.productForm.value.productName);
-            formData.append("productDescr", this.productForm.value.productDescr);
-            formData.append("productPrice", this.productForm.value.productPrice);
-            this._productService.addProduct(formData).subscribe(() => {
-                this._productService.getProducts().subscribe(responseProduct => {
-                    this.products = responseProduct.data;
-                    this.clearForm(this.productForm);
+            if (isPlatformBrowser(this.platformId)) {
+                var file = $('#productAvatar').prop('files')[0];
+                var formData = new FormData();
+                formData.append("productImage", file);
+                formData.append("productCode", this.productForm.value.productCode);
+                formData.append("productName", this.productForm.value.productName);
+                formData.append("productDescr", this.productForm.value.productDescr);
+                formData.append("productPrice", this.productForm.value.productPrice);
+                this._productService.addProduct(formData).subscribe(() => {
+                    this._productService.getProducts().subscribe(responseProduct => {
+                        this.products = responseProduct.data;
+                        this.clearForm(this.productForm);
+                    });
                 });
-            });
+            }
         }
     }
 
     clearForm(form) {
-        $(':input', form).each(function() {
+        /*$(':input', form).each(function() {
             var type = this.type;
             var tag = this.tagName.toLowerCase();
             console.log('input: ', this);
@@ -145,11 +244,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
                 $(this).replaceWith($(this).val('').clone( true ));
                 console.log('input file');
             }
-        });
+        });*/
     }
 
     delete(product) {
-        console.log('deleting product: ', product);
         this._productService.deleteProduct(product.id).subscribe(() => {
             this._productService.getProducts().subscribe(responseProduct => {
                 this.products = responseProduct.data;

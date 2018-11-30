@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Product } from '../product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../shared/product-service/product-service'
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from 'jquery';
 import { environment } from '../../environments/environment.prod';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'product-detail',
@@ -22,39 +23,53 @@ export class ProductDetailComponent implements OnInit {
     editFlag: boolean;
     env = environment;
 
-    constructor(private _productService: ProductService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {}
+    constructor(private _productService: ProductService, private formBuilder: FormBuilder, private route: ActivatedRoute,
+                private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+        if (isPlatformBrowser(this.platformId)) {
+            $(document).ready(function () {
+                let productCard = document.querySelectorAll('.product-card');
+                if (productCard.length !== 0) {
+                    let productCardHTML = productCard[0] as HTMLElement;
+                    let productCardWidth = parseInt(getComputedStyle(productCardHTML).width);
+                    productCardHTML.style.height = productCardWidth + 'px';
+                }
+            })
+        }
+    }
 
     ngOnInit() {
-        this.productDetailForm = this.formBuilder.group({
-            productCode: ['', Validators.required],
-            productName: ['', Validators.required],
-            productImage: ['', Validators.required],
-            productDescr: ['', Validators.required],
-            productPrice: ['', Validators.required]
-        });
+        if (isPlatformBrowser(this.platformId)) {
+            this.productDetailForm = this.formBuilder.group({
+                productCode: ['', Validators.required],
+                productName: ['', Validators.required],
+                productImage: ['', Validators.required],
+                productDescr: ['', Validators.required],
+                productPrice: ['', Validators.required]
+            });
 
-        this.productId = this.route.snapshot.paramMap.get("id");
-        this.editFlag = this.route.snapshot.queryParams.edit.toLowerCase() == 'true' ? true : false;
+            this.productId = this.route.snapshot.paramMap.get("id");
+            this.editFlag = this.route.snapshot.queryParams.edit.toLowerCase() == 'true' ? true : false;
 
-        this._productService.getProductById(this.productId).subscribe((responseProduct) => {
-            this.imageName = $('#file input[type=file]').val();
-            const imagePath = responseProduct.data.image;
-            const namePos = imagePath.lastIndexOf('\\');
-            this.product = responseProduct.data;
-            this.imageName = imagePath.slice(namePos+1);
-            $('#file').addClass('no-chosen-file');
-        });
+            this._productService.getProductById(this.productId).subscribe((responseProduct) => {
+                this.imageName = $('#file input[type=file]').val();
+                const imagePath = responseProduct.data.image;
+                const namePos = imagePath.lastIndexOf('\\');
+                this.product = responseProduct.data;
+                this.imageName = imagePath.slice(namePos + 1);
+                $('#file').addClass('no-chosen-file');
+            });
 
-        $('#file input[type=file]').on('change',function(){
-            $('#file').removeClass('no-chosen-file');
-            if(this.files[0] && this.files[0].name) {
-                this.imageName = this.files[0].name;
-                $('.product-image').attr('src', 'uploads/' + this.imageName);
-            } else {
-                this.imageName = '';
-                $('.product-image').attr('src', '');
-            }
-        });
+            $('#file input[type=file]').on('change', function () {
+                $('#file').removeClass('no-chosen-file');
+                if (this.files[0] && this.files[0].name) {
+                    this.imageName = this.files[0].name;
+                    $('.product-image').attr('src', 'uploads/' + this.imageName);
+                } else {
+                    this.imageName = '';
+                    $('.product-image').attr('src', '');
+                }
+            });
+        }
     }
 
     displayEditSection() {
@@ -66,10 +81,12 @@ export class ProductDetailComponent implements OnInit {
     }
 
     clearImage() {
-        $('#file').removeClass('no-chosen-file');
-        const fileInput = $('#file input[type=file]');
-        fileInput.replaceWith( fileInput.val('').clone( true ) );
-        this.product.image = '#';
+        if (isPlatformBrowser(this.platformId)) {
+            $('#file').removeClass('no-chosen-file');
+            const fileInput = $('#file input[type=file]');
+            fileInput.replaceWith(fileInput.val('').clone(true));
+            this.product.image = '#';
+        }
     }
 
     getUrlParams (url) {
@@ -105,17 +122,18 @@ export class ProductDetailComponent implements OnInit {
         if (this.productDetailForm.invalid) {
             return;
         } else {
-            console.log('ProductDetail: ', this.productDetailForm);
-            var file = $('#file input[type=file]').prop('files')[0];
-            var formData = new FormData();
-            formData.append("productImage", file);
-            formData.append("productCode", this.productDetailForm.value.productCode);
-            formData.append("productName", this.productDetailForm.value.productName);
-            formData.append("productDescr", this.productDetailForm.value.productDescr);
-            formData.append("productPrice", this.productDetailForm.value.productPrice);
-            this._productService.updateProduct(formData).subscribe(() => {
-                this.router.navigateByUrl('/products');
-            });
+            if (isPlatformBrowser(this.platformId)) {
+                var file = $('#file input[type=file]').prop('files')[0];
+                var formData = new FormData();
+                formData.append("productImage", file);
+                formData.append("productCode", this.productDetailForm.value.productCode);
+                formData.append("productName", this.productDetailForm.value.productName);
+                formData.append("productDescr", this.productDetailForm.value.productDescr);
+                formData.append("productPrice", this.productDetailForm.value.productPrice);
+                this._productService.updateProduct(formData).subscribe(() => {
+                    this.router.navigateByUrl('/products');
+                });
+            }
         }
     }
 

@@ -22,11 +22,13 @@ interface ResponseSingle {
 @Injectable()
 export class ProductService {
 
-    private productsUrl = 'products';
+    private productsUrl = '/api/products';
+    private productUrl = '/api/product';
 
     constructor(private http: HttpClient,
     @Optional() @Inject(APP_BASE_HREF) origin: string) {
         this.productsUrl = origin ? `${origin}${this.productsUrl}` : this.productsUrl;
+        this.productUrl = origin ? `${origin}${this.productUrl}` : this.productUrl;
     }
 
     generateId() {
@@ -38,19 +40,18 @@ export class ProductService {
     }
 
     getProductById(productId): Observable<ResponseSingle> {
-        return this.http.get<ResponseSingle>('/product', {params: {'productId': productId}});
+        return this.http.get<ResponseSingle>(this.productUrl, {params: {'productId': productId}});
     }
 
     addProduct(formData) {
-        return this.http.post('/product', formData);
+        return this.http.post(this.productUrl, formData);
     }
 
     updateProduct(updatedProduct) {
-        console.log('updatedProduct: ', updatedProduct);
-        return this.http.put('/product', updatedProduct);
+        return this.http.put(this.productUrl, updatedProduct);
     }
     deleteProduct(productId) {
-        return this.http.delete('/product', {params: {'id': productId}});
+        return this.http.delete(this.productUrl, {params: {'id': productId}});
     }
 
 }

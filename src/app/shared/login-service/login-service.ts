@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Injectable} from '@angular/core';
 
 import { Login } from '../../login';
 
@@ -12,7 +12,7 @@ interface ResponseArray {
 
 @Injectable()
 export class LoginService {
-    private loginUrl = 'login';
+    private loginUrl = '/api/login';
 
     constructor(private http: HttpClient){}
 

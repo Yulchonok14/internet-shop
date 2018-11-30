@@ -5,7 +5,7 @@
     </div>
     <div class="sign-in">
         <button (click)="showForm = true" *ngIf="!env.isAdmin && !showForm"><a>Sign in</a></button>
-        <button (click)="env.isAdmin=false" *ngIf="env.isAdmin && !showForm"><a>Sign out</a></button>
+        <button (click)="signOut()" *ngIf="env.isAdmin && !showForm"><a>Sign out</a></button>
         <form *ngIf="showForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label>Login:</label>
@@ -21,8 +21,14 @@
                     <div *ngIf="f.password.errors.required">Password is required</div>
                 </div>
             </div>
-            <div class="form-group sign-in-btn">
-                <button class="btn">Sign in</button>
+            <span *ngIf="showError">Login or password is incorrect</span>
+            <div class="btn-group">
+                <div class="form-group cancel-btn">
+                    <button (click)="showForm = false;" class="btn">Cancel</button>
+                </div>
+                <div class="form-group sign-in-btn">
+                    <button class="btn">Sign in</button>
+                </div>
             </div>
         </form>
     </div>

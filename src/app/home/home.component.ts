@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit {
             const length = responseProduct.data.length;
             const productsArray = length < 5 ? responseProduct.data :
                 responseProduct.data.slice(length - 5);
-            console.log('productsArray: ', productsArray);
             this.imageUrlArray = productsArray.map(product =>
                 'uploads/' + product.image.slice(product.image.lastIndexOf('\\') + 1));
         });

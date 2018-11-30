@@ -9,7 +9,6 @@
 .jumbotrone {
   position: relative;
   width: 100%;
-  min-height: 80vh;
 }
 
 .nav {
@@ -34,6 +33,9 @@
   }
 }
 
-.footer {
-  height: 7vh;
+@media (max-width: 575px) {
+  .main-container {
+    width: 100vw;
+    padding: 20px
+  }
 }

@@ -1,16 +1,16 @@
 <div class="top-panel">
-    <div class="slide-button-container">
-        <h5 class="add-product-title">Add new product</h5>
-        <button id="slide-down"
-                (click)="slideDown()"><i class="fa fa-angle-down"></i>
-        </button>
-        <button id="slide-up"
-                (click)="slideUp()"><i class="fa fa-angle-up"></i>
-        </button>
-    </div>
     <div class="search-section">
         <label>Search: </label>
         <input [formControl]="queryField" type="text" />
+    </div>
+    <div class="slide-button-container">
+        <h5 class="add-product-title">Add new product</h5>
+        <button id="slide-down" *ngIf="env.isAdmin"
+                (click)="slideDown()"><i class="fa fa-angle-down"></i>
+        </button>
+        <button id="slide-up" *ngIf="env.isAdmin"
+                (click)="slideUp()"><i class="fa fa-angle-up"></i>
+        </button>
     </div>
 </div>
 <div class="product-list-container">
@@ -61,7 +61,7 @@
         </div>
     </div>
     <div class="products">
-        <div class="product-card" *ngFor="let product of pagedProducts">
+        <div class="product-card col-md-6 col-lg-4" *ngFor="let product of pagedProducts">
             <div class="image-info-block">
                 <div class="image-block">
                     <img class="product-image" src="{{product.image}}"/>

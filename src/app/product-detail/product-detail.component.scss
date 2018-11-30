@@ -42,11 +42,11 @@ form button.update {
   justify-content: center;
 
   .product-card {
-    width: 50%;
     border: 4px solid #ced4da;
     margin-bottom: 0.5%;
     display: flex;
     flex-direction: column;
+    width: 35vw;
 
     .image-info-block {
       display: flex;
@@ -102,11 +102,15 @@ form button.update {
             text-align: center;
           }
 
-          .action-buttons button {
-            color: #6495ED;
-            background-color: transparent;
-            border: none;
-            outline: none;
+          .action-buttons {
+            display: flex;
+
+            button {
+              color: #6495ED;
+              background-color: transparent;
+              border: none;
+              outline: none;
+            }
           }
         }
       }
@@ -123,6 +127,22 @@ form button.update {
       .description {
         display: inline-block;
       }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .product-detail-section .product-card {
+    width: 90vw;
+  }
+}
+
+@media (max-width: 575px) {
+  #file .file-select-block div {
+    width: 90%;
+
+    span {
+      width: 150px;
     }
   }
 }

@@ -1,6 +1,7 @@
 .header-content {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 
   .logo {
     display: flex;
@@ -48,9 +49,50 @@
         }
       }
 
-      button {
-        background-color: #add8e6;
+      span {
+        font-size: 80%;
+        color: #ed0000;
+        margin-bottom: 1rem;
+        display: inline-block;
       }
+
+      .btn-group {
+        display: flex;
+        justify-content: space-around;
+
+        .cancel-btn button{
+          background-color: #d5d9da;
+        }
+
+        .sign-in-btn button{
+          background-color: #add8e6;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .header-content {
+    display: block;
+
+    .logo {
+      img {
+        height: 11vh;
+      }
+
+      .title {
+        margin: 0 20px;
+        font-size: 16pt;
+        position: absolute;
+        left: 4vh;
+      }
+    }
+
+    .sign-in {
+      padding: 0;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }

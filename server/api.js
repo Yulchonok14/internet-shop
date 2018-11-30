@@ -59,7 +59,7 @@ var sendError = function(err, res) {
     res.status(500).json(response);
 };
 
-router.get('/products', function(req, res) {
+router.get('/api/products', function(req, res) {
     connection(function(db) {
         db.collection('products').find().toArray()
             .then(function(products) {
@@ -70,7 +70,7 @@ router.get('/products', function(req, res) {
     })
 });
 
-router.get('/product', function(req, res) {
+router.get('/api/product', function(req, res) {
     connection(function(db) {
         db.collection('products').findOne({id : req.query.productId})
             .then(function(product) {
@@ -81,7 +81,7 @@ router.get('/product', function(req, res) {
     })
 });
 
-router.post('/product', upload.single('productImage'), function(req, res) {
+router.post('/api/product', upload.single('productImage'), function(req, res) {
     connection(function(db) {
         console.log('Connected');
         const newProd = {
@@ -100,7 +100,7 @@ router.post('/product', upload.single('productImage'), function(req, res) {
     })
 });
 
-router.put('/product', upload.single('productImage'), function(req, res) {
+router.put('/api/product', upload.single('productImage'), function(req, res) {
     connection(function(db) {
         console.log('Connected');
         console.log('req.body', req.body);
@@ -121,7 +121,7 @@ router.put('/product', upload.single('productImage'), function(req, res) {
     })
 });
 
-router.delete('/product', function(req, res) {
+router.delete('/api/product', function(req, res) {
     connection(function(db) {
         console.log('Connected');
         db.collection('products').deleteOne(req.query)
@@ -134,7 +134,7 @@ router.delete('/product', function(req, res) {
     })
 });
 
-router.get('/login', function(req, res) {
+router.get('/api/login', function(req, res) {
     connection(function(db) {
         db.collection('login').find().toArray()
             .then(function(login) {

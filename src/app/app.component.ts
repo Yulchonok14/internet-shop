@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import * as $ from 'jquery';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-root',
@@ -9,11 +8,5 @@ import * as $ from 'jquery';
 export class AppComponent implements OnInit {
     constructor() {}
 
-    ngOnInit() {
-        $(document).ready(function(){
-            /*$('.slider').slick({
-                autoplay: true
-            });*/
-        });
-    }
+    ngOnInit() {}
 }
